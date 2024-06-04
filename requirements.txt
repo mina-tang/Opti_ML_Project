@@ -1,0 +1,2 @@
+# pytorch (required, but not in requirements in order to let user choose between cpu and gpu version)
+jupyter
