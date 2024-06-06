@@ -66,7 +66,8 @@ class VAE(nn.Module):
 
 
 class All_CNN_C(nn.Module):
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.drop0 = nn.Dropout(0.2)
         self.conv1 = nn.Conv2d(3, 96, kernel_size=3, padding=1)
         self.conv2 = nn.Conv2d(96, 96, kernel_size=3, padding=1)
