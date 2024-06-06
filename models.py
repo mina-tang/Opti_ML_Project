@@ -63,3 +63,36 @@ class VAE(nn.Module):
         z = self.reparameterize(mean, logvar)
         x = self.decode(z)
         return x, mean, logvar
+
+
+class All_CNN_C(nn.Module):
+    def __init__(self):
+        self.drop0 = nn.Dropout(0.2)
+        self.conv1 = nn.Conv2d(3, 96, kernel_size=3, padding=1)
+        self.conv2 = nn.Conv2d(96, 96, kernel_size=3, padding=1)
+        self.conv3 = nn.Conv2d(96, 96, kernel_size=3, padding=1, stride=2)
+        self.dp = nn.Dropout(0.5)
+        self.conv4 = nn.Conv2d(96, 192, kernel_size=3, padding=1)
+        self.conv5 = nn.Conv2d(192, 192, kernel_size=3, padding=1)
+        self.conv6 = nn.Conv2d(192, 192, kernel_size=3, padding=1, stride=2)
+        self.conv7 = nn.Conv2d(192, 192, kernel_size=3, padding=0)
+        self.conv8 = nn.Conv2d(192, 192, kernel_size=1)
+        self.conv9 = nn.Conv2d(192, 10, kernel_size=1)
+        self.avg = nn.AvgPool2d(6)
+
+    def forward(self, x):
+        x = self.drop0(x)
+        x = F.relu(self.conv1(x))
+        x = F.relu(self.conv2(x))
+        x = F.relu(self.conv3(x))
+        x = self.dp(x)
+        x = F.relu(self.conv4(x))
+        x = F.relu(self.conv5(x))
+        x = F.relu(self.conv6(x))
+        x = self.dp(x)
+        x = F.relu(self.conv7(x))
+        x = F.relu(self.conv8(x))
+        x = F.relu(self.conv9(x))
+        x = self.avg(x)
+        x = torch.squeeze(x)
+        return x
