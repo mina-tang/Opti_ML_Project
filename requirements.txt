@@ -1,2 +1,3 @@
 # pytorch (required, but not in requirements in order to let user choose between cpu and gpu version)
+# numpy, SPSA from qiskit_algorithms.optimizers for the executing SPSA algorithm
 jupyter
