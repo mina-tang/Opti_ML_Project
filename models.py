@@ -97,3 +97,23 @@ class All_CNN_C(nn.Module):
         x = self.avg(x)
         x = torch.squeeze(x)
         return x
+
+
+class LSTM(nn.Module):
+    def __init__(self, vocab_size, input_dim, hidden_dim, dropout_rate, embedding_weights=None,
+                 freeze_embeddings=False):
+        super().__init__()
+        if embedding_weights is not None:
+            self.embedding = torch.nn.Embedding.from_pretrained(torch.from_numpy(embedding_weights).float())
+            self.embedding.weight.requires_grad = not freeze_embeddings
+        else:  # train from scratch embeddings
+            self.embedding = nn.Embedding(vocab_size, input_dim)
+        self.lstm = nn.LSTM(input_dim, hidden_dim, bidirectional=True, num_layers=2)
+        self.dropout = nn.Dropout(dropout_rate)
+        self.fc = nn.Linear(2 * hidden_dim, vocab_size)
+
+    def forward(self, x):
+        embedded = self.dropout(self.embedding(x))
+        output, _ = self.lstm(embedded)
+        output = self.fc(output)
+        return output
