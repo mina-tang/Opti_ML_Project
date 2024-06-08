@@ -4,17 +4,20 @@ import torch
 class train_manager(object):
     def __init__(self, model, loss_fn, optimizer, train_loader, val_loader, device):
         super(train_manager, self).__init__()
-        self.model = model.to(device)
-        self.loss_fn = loss_fn.to(device)
-        self.optimizer = optimizer.to(device)
-        self.train_loader = train_loader.to(device)
-        self.val_loader = val_loader.to(device)
+        self.device = device
+        self.model = model.to(self.device)
+        self.loss_fn = loss_fn.to(self.device)
+        self.optimizer = optimizer
+        self.train_loader = train_loader
+        self.val_loader = val_loader
 
     def train_one_epoch(self):
         epoch_loss = 0
         i = 0
         for i, data in enumerate(self.train_loader):
             inputs, labels = data
+            inputs = inputs.to(self.device)
+            labels = labels.to(self.device)
             self.optimizer.zero_grad()
             outputs = self.model(inputs)
             loss = self.loss_fn(outputs, labels)
@@ -51,6 +54,8 @@ class train_manager(object):
         with torch.no_grad():
             for i, data in enumerate(self.val_loader):
                 inputs, labels = data
+                inputs = inputs.to(self.device)
+                labels = labels.to(self.device)
                 outputs = self.model(inputs)
                 loss = self.loss_fn(outputs, labels)
                 total_loss += loss.item()
