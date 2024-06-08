@@ -3,3 +3,4 @@
 |SGD| 74.83% |
 |AdaDelta| 89.44% |
 |AdaGrad|87.79%|
+|Adam|89.47%|
