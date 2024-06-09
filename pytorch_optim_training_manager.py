@@ -59,6 +59,10 @@ class train_manager(object):
                 outputs = self.model(inputs)
                 loss = self.loss_fn(outputs, labels)
                 total_loss += loss.item()
+                # handle multiple returns for the model
+                # only the predictions are needed for predicted
+                if type(outputs) is tuple:
+                    outputs = outputs[0]
                 predicted = torch.argmax(outputs, dim=1)
                 correct = torch.sum(predicted == labels)
                 total_correct += correct
