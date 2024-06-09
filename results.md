@@ -4,3 +4,4 @@
 |AdaDelta| 89.44% |
 |AdaGrad|87.79%|
 |Adam|89.47%|
+|RMSprop|87.32%|
