@@ -6,5 +6,6 @@ special case: pytorch, as the specific version depends on CUDA (if you have it, 
 
 ## benchmark
 The benchmark consist of the following problems:
-- P1: simple CNN (2c2d) for classification on the Fashion MNIST dataset
-- P2: 
+- P1: simple CNN (2c2d) for classification on the Fashion MNIST dataset, evaluated on accuracy
+- P2: VAE (2 linear layers for both encoder and decoder) for generation on MNIST, evaluated on the loss
+- P3 :
