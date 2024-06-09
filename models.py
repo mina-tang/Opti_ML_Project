@@ -87,7 +87,7 @@ class All_CNN_C(nn.Module):
         self.conv6 = nn.Conv2d(192, 192, kernel_size=3, padding=1, stride=2)
         self.conv7 = nn.Conv2d(192, 192, kernel_size=3, padding=0)
         self.conv8 = nn.Conv2d(192, 192, kernel_size=1)
-        self.conv9 = nn.Conv2d(192, 10, kernel_size=1)
+        self.conv9 = nn.Conv2d(192, 100, kernel_size=1)
         self.avg = nn.AvgPool2d(6)
 
     def forward(self, x):
