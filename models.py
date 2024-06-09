@@ -21,12 +21,21 @@ class CNN_Simple(nn.Module):
         return x
 
 
+class Flatten(nn.Module):
+    def __init__(self):
+        super(Flatten, self).__init__()
+
+    def forward(self, x):
+        return x.view(x.size(0), -1)
+
+
 class VAE(nn.Module):
-    def __init__(self, input_dim, hidden_dim, latent_dim, device=None):
+    def __init__(self, input_dim=784, hidden_dim=256, latent_dim=8, device=None):
         if device is None:
             self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         super(VAE, self).__init__()
         self.encoder = nn.Sequential(
+            Flatten(),
             nn.Linear(input_dim, hidden_dim),
             nn.LeakyReLU(0.2),
             nn.Linear(hidden_dim, latent_dim),
