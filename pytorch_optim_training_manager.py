@@ -97,7 +97,7 @@ class train_manager(object):
                     predicted = torch.argmax(outputs, dim=1)
                     correct = torch.sum(predicted == labels)
                     total_correct += correct
-                    total_samples += len(labels)
+                    total_samples += labels.numel()
         if eval_mode == 'loss':
             return total_loss / (i + 1)
         elif eval_mode == 'accuracy':
