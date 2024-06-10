@@ -8,17 +8,14 @@ import os
 import torch
 import torch.optim as optim
 import sys
-sys.path.append('../')
-sys.path.append('spsa/')
+sys.path.append("../")
+sys.path.append("spsa/")
 
 
 class SPSA(optim.Optimizer):
-    def __init__(self, params, lr = 0.1, c = 0.1, alpha = 0.6, gamma = 0.101, t = 0):
-        defaults = dict(lr = lr, c = c, alpha = alpha, gamma = gamma, t = t)
+    def __init__(self, params, lr = 0.1, c = 0.1, alpha = 0.602, gamma = 0.101):
+        defaults = dict(lr = lr, c = c, alpha = alpha, gamma = gamma, t = 0)
         super(SPSA, self).__init__(params, defaults)
-
-    def __setstate__(self, state):
-        super(SPSA, self).__setstate__(state)
 
     def step(self, closure = None):
         loss = None
@@ -26,22 +23,30 @@ class SPSA(optim.Optimizer):
             loss = closure()
 
         for group in self.param_groups:
-            lr = group['lr']
-            c = group['c']
-            alpha = group['alpha']
-            gamma = group['gamma']
-            t = group['t']
-            for p in group['params']:
+            lr = group["lr"]
+            c = group["c"]
+            alpha = group["alpha"]
+            gamma = group["gamma"]
+            t = group["t"] + 1
+            group["t"] = t
+
+            for p in group["params"]:
                 if p.grad is None:
                     continue
+                perturbation = torch.randint(0, 2, size = p.data.size(), dtype=p.data.dtype, device = p.data.device) * 2 - 1
+            
+                a_t = lr / (t ** alpha)
+                c_t = c / (t ** gamma)
 
-                d = p.grad.data
-                delta = 2 * torch.randint(0, 2, size = d.size(), dtype = torch.float32) - 1
+                p.data.add_(c_t * perturbation)
+                positive_loss = closure()
                 
-                #Scale
-                a = c / (t + 1) ** gamma
+                p.data.sub_(2 * c_t * perturbation)
+                negative_loss = closure()
+                
+                p.data.add_(c_t * perturbation)
 
-                #SPSA step
-                p.data.add_(-lr * (a * delta.sign() + alpha) * d)
+                g_hat = (positive_loss - negative_loss) / (2.0 * c_t * perturbation)
 
+                p.data.add_(-a_t * g_hat)       
         return loss
