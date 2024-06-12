@@ -10,6 +10,8 @@ class train_manager(object):
         self.optimizer = optimizer
         self.train_loader = train_loader
         self.val_loader = val_loader
+        # remove this after test is done
+        self.test_ol = []
 
     def train_one_epoch(self, is_LSTM=False):
         epoch_loss = 0
@@ -72,6 +74,7 @@ class train_manager(object):
                     inputs = inputs.to(self.device)
                     labels = labels.to(self.device)
                     outputs = self.model(inputs)
+
                     loss = self.loss_fn(outputs, labels)
                     total_loss += loss.item()
                     # handle multiple returns for the model
@@ -79,6 +82,7 @@ class train_manager(object):
                     if type(outputs) is tuple:
                         outputs = outputs[0]
                     if is_wine:
+                        self.test_ol.append((outputs, labels))
                         correct = (torch.abs(outputs - labels) < 0.5).type(torch.float).sum().item()
                     else:
                         predicted = torch.argmax(outputs, dim=1)
