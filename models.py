@@ -3,6 +3,20 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+class Simple_Net(nn.Module):
+    def __init__(self):
+        super(Simple_Net, self).__init__()
+        self.fc1 = nn.Linear(11, 10).to(dtype=torch.float64)
+        self.relu = nn.ReLU()
+        self.fc2 = nn.Linear(10, 1).to(dtype=torch.float64)
+
+    def forward(self, x):
+        x = self.fc1(x)
+        x = self.relu(x)
+        x = self.fc2(x)
+        return x
+
+
 class CNN_Simple(nn.Module):
     def __init__(self):
         super(CNN_Simple, self).__init__()
