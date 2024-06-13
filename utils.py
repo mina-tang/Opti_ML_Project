@@ -4,6 +4,12 @@ from collections import Counter
 
 
 def get_LSTM_dataloaders(lstm_dataset, test_ratio=0.1):
+    """
+    split dataset into train and test sets with provided ratio
+    :param lstm_dataset: dataset to split
+    :param test_ratio: ratio of test set
+    :return: 2 dataloader objects for both train and test sets
+    """
     # split train/test dataset.
     lstm_train_dataset, lstm_test_dataset = torch.utils.data.random_split(lstm_dataset, [1 - test_ratio, test_ratio])
     # get pytorch DataLoader
@@ -13,6 +19,12 @@ def get_LSTM_dataloaders(lstm_dataset, test_ratio=0.1):
 
 
 def isEnglish(sample):
+    """
+    is false when sample isn't made of ascii characters (approximation of english)
+    true otherwise
+    :param sample: sample to evaluate
+    :return: boolean
+    """
     try:
         sample.encode(encoding='utf-8').decode('ascii')
     except UnicodeDecodeError:
@@ -22,6 +34,11 @@ def isEnglish(sample):
 
 
 def lowerCase(sample):
+    """
+    put sample to lowercase
+    :param sample:
+    :return: sample with text to lowercase
+    """
     return {"text": sample["text"].lower()}
 
 
@@ -34,6 +51,13 @@ def count_tokens(dataset):
 
 
 def replace_rare_tokens(sample, rare_tokens, unk_token):
+    """
+    put unk_token in place of rare tokens
+    :param sample: sample to evaluate
+    :param rare_tokens: list of rare tokens
+    :param unk_token: unknown token
+    :return: sample with replaced tokens
+    """
     text = sample["text"]
     modified_tokens = [(token if token not in rare_tokens else unk_token)
                        for token in text.split()]
@@ -41,6 +65,13 @@ def replace_rare_tokens(sample, rare_tokens, unk_token):
 
 
 def is_unknown_sequence(sample, unk_token, unk_threshold=0.1):
+    """
+    returns true if sample contains a proportion of unk token greater than the threshold
+    :param sample: sample to evaluate
+    :param unk_token: unknown token
+    :param unk_threshold: threshold for unknown token
+    :return: boolean
+    """
     sample_tokens = sample["text"].split()
     if sample_tokens.count(unk_token) / len(sample_tokens) > unk_threshold:
         return True
