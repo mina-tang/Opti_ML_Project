@@ -52,6 +52,8 @@ class VAE(nn.Module):
     def __init__(self, input_dim=784, hidden_dim=256, latent_dim=8, device=None):
         if device is None:
             self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        else:
+            self.device = device
         super(VAE, self).__init__()
         self.encoder = nn.Sequential(
             Flatten(),
