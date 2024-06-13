@@ -92,7 +92,7 @@ class VAE(nn.Module):
         mean, logvar = self.encode(x)
         z = self.reparameterize(mean, logvar)
         x = self.decode(z)
-        return x, mean, logvar
+        return x
 
 
 class All_CNN_C(nn.Module):
