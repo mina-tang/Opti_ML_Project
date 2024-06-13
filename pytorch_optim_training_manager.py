@@ -10,8 +10,6 @@ class train_manager(object):
         self.optimizer = optimizer
         self.train_loader = train_loader
         self.val_loader = val_loader
-        # remove this after test is done
-        self.test_ol = []
 
     def train_one_epoch(self, is_LSTM=False):
         epoch_loss = 0
@@ -48,7 +46,7 @@ class train_manager(object):
         eval_losses = []
         for epoch in range(epochs):
             self.model.train(True)
-            avg_loss = self.train_one_epoch(is_LSTM)
+            avg_loss = self.train_one_epoch(is_LSTM=is_LSTM)
             train_losses.append(avg_loss)
             if eval_all_epochs:
                 eval = self.eval_model(eval_mode=eval_mode, is_LSTM=is_LSTM, is_wine=is_wine)
@@ -81,11 +79,11 @@ class train_manager(object):
                     # only the predictions are needed for predicted
                     if type(outputs) is tuple:
                         outputs = outputs[0]
+                    predicted = torch.argmax(outputs, dim=1)
                     if is_wine:
-                        self.test_ol.append((outputs, labels))
-                        correct = (torch.abs(outputs - labels) < 0.5).type(torch.float).sum().item()
+                        labels = torch.argmax(labels, dim=1)
+                        correct = torch.sum(predicted == labels)
                     else:
-                        predicted = torch.argmax(outputs, dim=1)
                         correct = torch.sum(predicted == labels)
                     total_correct += correct
                     total_samples += len(labels)

@@ -4,18 +4,23 @@ import torch.nn.functional as F
 
 
 class Simple_Net(nn.Module):
-    def __init__(self):
+    def __init__(self, n_classes=7):
         super(Simple_Net, self).__init__()
-        self.fc1 = nn.Linear(11, 10).to(dtype=torch.float64)
-        self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(10, 1).to(dtype=torch.float64)
+        self.fc1 = nn.Linear(11, 32).to(dtype=torch.float64)
+        self.relu1 = nn.GELU()
+        self.fc2 = nn.Linear(32, 32).to(dtype=torch.float64)
+        self.relu2 = nn.GELU()
+        self.fc3 = nn.Linear(32, n_classes).to(dtype=torch.float64)
+        self.softmax = nn.Softmax()
 
     def forward(self, x):
         x = self.fc1(x)
-        x = self.relu(x)
+        x = self.relu1(x)
         x = self.fc2(x)
+        x = self.relu2(x)
+        x = self.fc3(x)
+        x = self.softmax(x)
         return x
-
 
 class CNN_Simple(nn.Module):
     def __init__(self):
