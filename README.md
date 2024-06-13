@@ -18,6 +18,7 @@ The benchmarks consist of the following problems:
 - function used to process the data are in `utils.py`
 - the manager for pytorch optimizer is in `pytorch_optim_training_manager.py`
 - `torch_problems_eval.ipynb` and `nevergrad_problem_eval.ipynb` are the notebook to produce results
+- the manager for nevergrad optimizer is build in `nevergrad_problem_eval.ipynb`
 - our best results for each problem and for each optimizer are in `results.md`
 - results for each epoch are stored as file in the results folder
 - `generate_graph.ipynb` is the notebook used to produce graphs from the files in results folder
