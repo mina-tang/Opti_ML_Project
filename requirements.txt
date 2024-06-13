@@ -1,7 +1,6 @@
 # torch, torchvision (required, but not in requirements in order to let user choose between cpu and gpu version of pytorch)
 torch~=2.3.0+cu121
-torchvision ~=
-# SPSA from qiskit_algorithms.optimizers for the executing SPSA algorithm
+torchvision ~=0.18.0+cu121
 numpy
 jupyter
 datasets
@@ -9,3 +8,5 @@ tqdm
 ucimlrepo
 pandas
 scikit-learn
+nevergrad
+matplotlib
