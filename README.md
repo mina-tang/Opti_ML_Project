@@ -1,6 +1,6 @@
 # Opti_ML_Project
 ## Environment Setup
-To setup the environment, please first install the packages in `requirement.txt`.
+To set up the environment, please first install the packages in `requirement.txt`.
 For Pytorch, the version in requirement.txt should be the cuda12.1 version.
 As the specific version depends on CUDA, install your preferred version from [here](https://pytorch.org/get-started/locally/), using the stable release (2.3.0). 
 
